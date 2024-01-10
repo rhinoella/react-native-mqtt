@@ -1,8 +1,10 @@
 
 # Enhancement of Quito
-
+> source repository: https://github.com/6d7a/quito
 1. upgrade react-native to 0.73
-2. ...
+2. upgrade CocoaMQTT to 2.1.6
+3. use MqttCocoaAsyncSocket instead of CocoaAsyncSocket
+4. fix exapmle project bug
 
 --- 
 # Quito ![Logo](./docs/assets/quito_round.svg)
