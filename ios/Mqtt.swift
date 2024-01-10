@@ -15,8 +15,7 @@ private var clients: [ String: MqttClient ] = [:]
     @objc func createClient(_ options: NSDictionary, resolver resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
       do {
         let id = UUID().uuidString
-        clients[id] = try MqttClient(withEmitter:
-                                    MqttEventEmitter(withNativeEventEmitter: self, clientRef: id),
+        clients[id] = try MqttClient(MqttEventEmitter(self, id),
                                   options: MqttOptions(fromJsOptions: options),
                                   clientRef: id
         )

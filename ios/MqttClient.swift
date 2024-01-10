@@ -6,8 +6,8 @@ class MqttClient {
     private let options: MqttOptions
     private let client: CocoaMQTT
     private let clientRef: String
-    
-    init(withEmitter eventEmitter: MqttEventEmitter, options: MqttOptions, clientRef: String) throws {
+
+    init(_ eventEmitter: MqttEventEmitter, options: MqttOptions, clientRef: String) throws {
         self.clientRef = clientRef
         self.eventEmitter = eventEmitter
         self.options = options
@@ -17,14 +17,14 @@ class MqttClient {
         } else {
             self.client = CocoaMQTT(clientID: options.clientId, host: options.host, port: options.port)
         }
-        
+
         self.client.username = options.username
         self.client.password = options.password
         self.client.cleanSession = options.cleanSession
         self.client.willMessage = options.will?.toCocoaMqttMessage()
         self.client.keepAlive = options.keepaliveSec
         self.client.enableSSL = options.tls
-        
+
         if options.tls {
             do {
                 try parseCertificate(options: options)
@@ -32,13 +32,13 @@ class MqttClient {
                 throw error
             }
         }
-        
+
         self.client.didChangeState = { (_: CocoaMQTT, newState: CocoaMQTTConnState) in
             if newState == CocoaMQTTConnState.disconnected {
                 self.eventEmitter.sendEvent(event: MqttEvent.CONNECTION_LOST)
             }
         }
-        
+
         self.client.didReceiveMessage = { (_, msg, _) in
             self.eventEmitter.sendEvent(event: MqttEvent.MESSAGE_RECEIVED, params: [
                 MqttEventParam.TOPIC.rawValue: msg.topic,
@@ -46,7 +46,7 @@ class MqttClient {
             ])
         }
     }
-    
+
     /**
      * Queries the connection status of the MQTT client.
      * @returns A boolean indicating whether or not the client is connected.
@@ -54,7 +54,7 @@ class MqttClient {
     func isConnected() -> Bool {
         return self.client.connState == CocoaMQTTConnState.connected
     }
-    
+
     /**
      * connects to the MQTT broker according to the
      * previously defined MqttConnectOptions
@@ -75,7 +75,7 @@ class MqttClient {
             reject("", error.localizedDescription, nil)
         }
     }
-    
+
     /**
      * Subscribes to one or more topics with the given
      * quality of service.
@@ -106,7 +106,7 @@ class MqttClient {
             reject("", error.localizedDescription, nil)
         }
     }
-    
+
     /**
      * Unsubscribes from one or more topics
      *
@@ -134,7 +134,7 @@ class MqttClient {
             reject("", error.localizedDescription, nil)
         }
     }
-    
+
     /**
      * Publishes a message to a topic.
      *
@@ -162,7 +162,7 @@ class MqttClient {
             reject("", error.localizedDescription, nil)
         }
     }
-    
+
     /**
      * Disconcts the client from the MQTT broker
      *
@@ -186,7 +186,7 @@ class MqttClient {
             reject("", error.localizedDescription, nil)
         }
     }
-    
+
     func isConnected(resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) {
         do {
             let isConnected = self.client.connState == CocoaMQTTConnState.connected
@@ -196,25 +196,25 @@ class MqttClient {
             reject("", error.localizedDescription, nil)
         }
     }
-    
+
     private func parseCertificate(options: MqttOptions) throws {
         guard let certKey = options.ios_certKeyP12Base64 else {
             self.client.allowUntrustCACertificate = true
             return
         }
-        
+
         guard let keystorePw = options.keyStorePassword else {
             throw MqttError.certificateError("A keystore password for the p12 certificate must be provided.")
         }
-        
+
         let opts: NSDictionary = [kSecImportExportPassphrase: keystorePw]
         var items: CFArray?
-        
+
         guard let p12Data = NSData(base64Encoded: certKey, options: .ignoreUnknownCharacters) else {
             throw MqttError.certificateError("Failed to read p12 certificate")
         }
         let securityError = SecPKCS12Import(p12Data, opts, &items)
-        
+
         guard securityError == errSecSuccess else {
             if securityError == errSecAuthFailed {
                 throw MqttError.certificateError("SecPKCS12Import returned errSecAuthFailed. A possible reason might be that you provided an incorrect password.")
@@ -222,18 +222,18 @@ class MqttClient {
                 throw MqttError.certificateError("Failed to read p12 certificate. Reason code: \(securityError)")
             }
         }
-        
+
         guard let certArray = items, CFArrayGetCount(certArray) > 0 else {
             throw MqttError.certificateError("Failed to read p12 certificate")
         }
-        
+
         let dictionary = (certArray as NSArray).object(at: 0)
         guard let identity = (dictionary as AnyObject).value(forKey: kSecImportItemIdentity as String) else {
             throw MqttError.certificateError("Failed to read p12 certificate")
         }
-        
+
         var sslSettings: [String: NSObject] = [:]
-        
+
         sslSettings["kCFStreamSSLIsServer"] = NSNumber(value: false)
         sslSettings["kCFStreamSSLCertificates"] = [identity] as CFArray
         self.client.sslSettings = sslSettings

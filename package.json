@@ -1,6 +1,6 @@
 {
   "name": "@arkyutao/react-native-mqtt",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "The Mqtt client for react native",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -92,7 +92,9 @@
   },
   "jest": {
     "preset": "react-native",
-    "testPathIgnorePatterns": ["mock"],
+    "testPathIgnorePatterns": [
+      "mock"
+    ],
     "modulePathIgnorePatterns": [
       "<rootDir>/example/node_modules",
       "<rootDir>/lib/"
