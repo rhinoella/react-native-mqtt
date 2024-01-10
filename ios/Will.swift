@@ -14,7 +14,6 @@ struct Will {
   }
 
   func toCocoaMqttMessage() -> CocoaMQTTMessage {
-      let payload = Data(base64Encoded: self.payload) as! Data
-      return CocoaMQTTMessage(topic: self.topic, payload: [UInt8](payload), qos: self.qos.cocoaQos(), retained: self.retain)
+      return CocoaMQTTMessage(topic: self.topic, payload: [UInt8](self.payload.utf8), qos: self.qos.cocoaQos(), retained: self.retain)
   }
 }

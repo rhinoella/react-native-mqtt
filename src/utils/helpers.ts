@@ -16,17 +16,17 @@ export const parseBrokerUrl = (url: string): UrlData => {
     throw new Error(`Invalid broker url: ${url}`);
   }
 
-  const [, , protocolStr, , host, portStr] = destructured;
+  const [ , , protocolStr, , host, portStr] = destructured;
 
-  const port = parseInt(portStr);
-  const protocol = parseProtocolString(protocolStr);
+  const port = parseInt(portStr!!);
+  const protocol = parseProtocolString(protocolStr!!);
 
   const tls =
     protocol === Protocol.TCP_TLS || protocol === Protocol.WSS
       ? true
       : undefined;
 
-  return { host, port, protocol, tls };
+  return { host: host!!, port, protocol, tls };
 };
 
 export const parseProtocolString = (protocolStr: string): Protocol => {

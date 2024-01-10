@@ -38,6 +38,8 @@ target 'MqttExample' do
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
+  pod 'MqttCocoaAsyncSocket', :modular_headers => true
+  pod 'react-native-mqtt', :path => '../..'
 
   target 'MqttExampleTests' do
     inherit! :complete

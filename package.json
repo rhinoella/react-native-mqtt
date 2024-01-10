@@ -91,6 +91,7 @@
   },
   "jest": {
     "preset": "react-native",
+    "testPathIgnorePatterns": ["mock"],
     "modulePathIgnorePatterns": [
       "<rootDir>/example/node_modules",
       "<rootDir>/lib/"
