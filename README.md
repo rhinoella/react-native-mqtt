@@ -21,7 +21,7 @@ This libraries owes a lot to [davesters](https://github.com/davesters)' and [Sud
 ## Installation
 
 ```sh
-npm install quito
+npm install @arkyutao/react-native-mqtt
 ```
 
 To make an unencrypted connection to an MQTT broker, make sure a consuming android application allows cleartext traffic, either generally by setting the _android:usesCleartextTraffic_ flag in the application field of the AndroidManifest.xml, or by adding a [security configuration](https://developer.android.com/training/articles/security-config).
@@ -33,7 +33,7 @@ The module provides promise- and callback-based methods to interact with the nat
 #### Callback-based usage
 
 ```typescript
-import { MqttClient, MqttOptionsBuilder } from 'react-native-mqtt';
+import { MqttClient, MqttOptionsBuilder } from '@arkyutao/react-native-mqtt';
 
 // build a config using the MqttOptionsBuilder
 const config = new MqttOptionsBuilder()
@@ -46,40 +46,40 @@ const MqttClient = new MqttClient(config);
 MqttClient.init() // call init() to create native client and set up native event listeners
   .then(() => {
     // Subscribing to event callbacks
-    MqttClient.on(QuitoEvent.CONNECTING, () => {
+    MqttClient.on(MqttEvent.CONNECTING, () => {
       // called when client is connecting
     });
-    MqttClient.on(QuitoEvent.CONNECTED, () => {
+    MqttClient.on(MqttEvent.CONNECTED, () => {
       // called when client is connected
     });
-    MqttClient.on(QuitoEvent.SUBSCRIBED, (topic: string) => {
+    MqttClient.on(MqttEvent.SUBSCRIBED, (topic: string) => {
       // called when client has subscribed to a topic
     });
-    MqttClient.on(QuitoEvent.UNSUBSCRIBED, (topic: string) => {
+    MqttClient.on(MqttEvent.UNSUBSCRIBED, (topic: string) => {
       // called when client has unsubscribed from a topic
     });
     MqttClient.on(
-      QuitoEvent.MESSAGE_RECEIVED,
+      MqttEvent.MESSAGE_RECEIVED,
       (topic: string, payload: Uint8Array) => {
         // called when client has received a message
       }
     );
     MqttClient.on(
-      QuitoEvent.MESSAGE_PUBLISHED,
+      MqttEvent.MESSAGE_PUBLISHED,
       (topic: string, payload: Uint8Array) => {
         // called when client has sent a message
       }
     );
-    MqttClient.on(QuitoEvent.DISCONNECTED, () => {
+    MqttClient.on(MqttEvent.DISCONNECTED, () => {
       // called when client has disconnected
     });
-    MqttClient.on(QuitoEvent.CONNECTION_LOST, (error?: Error) => {
+    MqttClient.on(MqttEvent.CONNECTION_LOST, (error?: Error) => {
       // called when client has unexpectedly lost its connection to the broker
     });
-    MqttClient.on(QuitoEvent.EXCEPTION, (error: Error) => {
+    MqttClient.on(MqttEvent.EXCEPTION, (error: Error) => {
       // called when client encountered an error
     });
-    MqttClient.on(QuitoEvent.CLOSED, (error?: Error) => {
+    MqttClient.on(MqttEvent.CLOSED, (error?: Error) => {
       // called when client was closed
     });
 
@@ -139,15 +139,15 @@ await MqttClient.init(); // call init() to create native client and set up nativ
 // Most message callbacks are redundant
 // when using the Promise-based API
 MqttClient.on(
-  QuitoEvent.MESSAGE_RECEIVED,
+  MqttEvent.MESSAGE_RECEIVED,
   (topic: string, payload: Uint8Array) => {
     // called when client has received a message
   }
 );
-MqttClient.on(QuitoEvent.CONNECTION_LOST, (error?: Error) => {
+MqttClient.on(MqttEvent.CONNECTION_LOST, (error?: Error) => {
   // called when client has unexpectedly lost its connection to the broker
 });
-MqttClient.on(QuitoEvent.EXCEPTION, (error: Error) => {
+MqttClient.on(MqttEvent.EXCEPTION, (error: Error) => {
   // called when client encountered an error
 });
 
@@ -206,9 +206,9 @@ try {
 }
 ```
 
-### Quito Options
+### Mqtt Options
 
-Use the QuitoOptionsBuilder to generate a config for the Quito MQTT client. The following options for configuring the Quito MQTT client are available:
+Use the MqttOptionsBuilder to generate a config for the MQTT client. The following options for configuring the MQTT client are available:
 
 - `clientId`: _string_ - Identifier used in the communication with the MQTT bromker
 - `username`: _string_ - Username used to authenticate the client against the broker
