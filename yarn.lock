@@ -22,9 +22,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@arkyutao/react-native-mqtt@workspace:.":
+"@rhinoella/react-native-mqtt@workspace:.":
   version: 0.0.0-use.local
-  resolution: "@arkyutao/react-native-mqtt@workspace:."
+  resolution: "@rhinoella/react-native-mqtt@workspace:."
   dependencies:
     "@commitlint/config-conventional": ^17.0.2
     "@evilmartians/lefthook": ^1.5.0

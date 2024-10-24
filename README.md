@@ -1,12 +1,14 @@
-
 # Enhancement of Quito
+
 > source repository: https://github.com/6d7a/quito
+
 1. upgrade react-native to 0.73
 2. upgrade CocoaMQTT to 2.1.6
 3. use MqttCocoaAsyncSocket instead of CocoaAsyncSocket
 4. fix exapmle project bug
 
---- 
+---
+
 # Quito ![Logo](./docs/assets/quito_round.svg)
 
 A TCP-capable MQTT client for React Native. The module provides a Typescript API for native MQTT clients on iOS and Android.
@@ -21,7 +23,7 @@ This libraries owes a lot to [davesters](https://github.com/davesters)' and [Sud
 ## Installation
 
 ```sh
-npm install @arkyutao/react-native-mqtt
+npm install @rhinoella/react-native-mqtt
 ```
 
 To make an unencrypted connection to an MQTT broker, make sure a consuming android application allows cleartext traffic, either generally by setting the _android:usesCleartextTraffic_ flag in the application field of the AndroidManifest.xml, or by adding a [security configuration](https://developer.android.com/training/articles/security-config).
@@ -33,7 +35,7 @@ The module provides promise- and callback-based methods to interact with the nat
 #### Callback-based usage
 
 ```typescript
-import { MqttClient, MqttOptionsBuilder } from '@arkyutao/react-native-mqtt';
+import { MqttClient, MqttOptionsBuilder } from '@rhinoella/react-native-mqtt';
 
 // build a config using the MqttOptionsBuilder
 const config = new MqttOptionsBuilder()
@@ -216,13 +218,13 @@ Use the MqttOptionsBuilder to generate a config for the MQTT client. The followi
 - `keepaliveSec`: _number_ - Maximum time interval in seconds between control packets
 - `connectTimeoutMs`: _number_ - Maximum time interval the client will wait for the network connection to the MQTT broker to be established
 - `will`: _Will_ - MQTT message that the broker will send, should the client connect ungracefully.
-    - `topic`: _string_ - Topic the will will be published to
-    - `payload`: _string_ - Message of the will Base64-encoded
-    - `qos`: _QoS_ - quality of service of the will
-    - `retain`: _boolean_ - Indicates whether the will should be retained
+  - `topic`: _string_ - Topic the will will be published to
+  - `payload`: _string_ - Message of the will Base64-encoded
+  - `qos`: _QoS_ - quality of service of the will
+  - `retain`: _boolean_ - Indicates whether the will should be retained
 - `tls`: _boolean_ - Whether the client will secure the connection to the broker using TLS. Depending on the host platform, the options vary.
-    - **On Android**: If `tls == true`, at least the broker's CA certificate `android_caBase64` is required. If the broker expects the client to present a certificate as well, the shared `android_caBase64` plus `android_certificateBase64`, `keyStoreKey`, and `keyStorePassword` options become mandatory
-    - **On iOS**: If `tls == true` and no `ios_certKeyP12Base64` is provided, broker certificates will not be validated. If `tls == true` and `ios_certKeyP12Base64` is provided, the client wil authenticate using the contained crypto.
+  - **On Android**: If `tls == true`, at least the broker's CA certificate `android_caBase64` is required. If the broker expects the client to present a certificate as well, the shared `android_caBase64` plus `android_certificateBase64`, `keyStoreKey`, and `keyStorePassword` options become mandatory
+  - **On iOS**: If `tls == true` and no `ios_certKeyP12Base64` is provided, broker certificates will not be validated. If `tls == true` and `ios_certKeyP12Base64` is provided, the client wil authenticate using the contained crypto.
 - `ios_certKeyP12Base64`: _String_ - Base64-encoded PKCS12 archive containing client certificate and key
 - `android_caBase64`: _String_ - Base64-encoded CA certificate (DER) used by the MQTT broker
 - `android_certificateBase64`: _String_ - Base64-encoded self-signed X509 certificate (DER) of the client

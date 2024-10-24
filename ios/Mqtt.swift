@@ -3,9 +3,11 @@ import Foundation
 @objc(Mqtt)
 class Mqtt: RCTEventEmitter {
 private var clients: [ String: MqttClient ] = [:]
+    public static var shared:Mqtt?
 
     override init() {
       super.init()
+      Mqtt.shared = self
     }
 
     @objc open override func supportedEvents() -> [String] {
